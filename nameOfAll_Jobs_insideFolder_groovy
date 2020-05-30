@@ -1,0 +1,6 @@
+ // GET NAMES OF ALL THE JOBS INSIDE A FOLDER
+for (job in Jenkins.instance.getAllItems(AbstractItem.class) ) {
+
+    if (job.fullName.startsWith('Sonata-Tests/BASE-TEST-MASTER/BART/'))
+  	println(job.fullName)
+  };  
