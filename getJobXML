@@ -1,7 +1,7 @@
  
 for (job in Jenkins.instance.getAllItems(AbstractItem.class) ) {
 
-  if (job.fullName.startsWith('Sonata-Tests/BASE-TEST-MASTER/BART/ADVISOR_FEE_UK')) {
+  if (job.fullName.startsWith('Sonata-Tests/MASTER/BART/ADVISOR_FEE_UK')) {
   	println(job.fullName)
   
     // get config file

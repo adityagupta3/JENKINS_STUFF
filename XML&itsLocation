@@ -1,0 +1,14 @@
+for (job in Jenkins.instance.getAllItems(AbstractItem.class) ) {
+
+  if (job.fullName.endsWith('INCOME_DISTRIBUTION')) {
+  	println(job.fullName)
+  
+
+   def configFile = job.getConfigFile();
+  
+    File file = configFile.getFile();
+  
+    println(file) 
+    }
+
+    }

@@ -1,0 +1,9 @@
+import groovy.io.FileType
+def list = []
+def dir = new File("/var/lib/jenkins/jobs/Sonata-Tests/jobs/MASTER/jobs/BART/jobs/ADVISOR_FEE_UK/")
+dir.eachFileRecurse (FileType.FILES) { file -> list << file
+}
+
+list.each {
+  println it.path
+}
