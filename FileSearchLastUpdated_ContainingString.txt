@@ -1,0 +1,49 @@
+
+'**************************************************************************************************************************************
+' Author: Aditya Gupta - Testing In Progress
+' Routine Scope:-  Purpose of 'FileSearchLastUpdated_ContainingString' routine first sorts the files by Last date modified and then searches for the string in the file and returns the path of that file
+'                           
+' Result:- I have tested this on XML files and its working fine till now       
+'****************************************************************************************************************************************************
+Function FileSearchLastUpdated_ContainingString(folderPath, SearchString)
+ 
+ Dim fileSysObj,file,ObjInputFile,TempString,SubstringToFind
+ Set fileSysObj = CreateObject("Scripting.FileSystemObject")
+ Set list = CreateObject("ADOR.Recordset")
+ SubstringToFind = SearchString
+ 
+ FileSearchLastUpdated_ContainingString = "File not found!" 
+ 
+  list.Fields.Append "name", 200, 255
+  list.Fields.Append "date", 7
+  list.Open
+
+  For Each f In fileSysObj.GetFolder(folderPath).Files
+    list.AddNew
+    list("name").Value = f.Path
+    list("date").Value = f.DateLastModified
+    list.Update
+  Next
+
+  list.Sort = "date DESC"
+
+  list.MoveFirst
+  Do Until list.EOF
+     file =  list("name").Value
+    Set ObjInputFile = fileSysObj.OpenTextFile(File)
+	  TempString = ObjInputFile.ReadAll
+     If InStr(TempString, SubstringToFind) <= 0 Then
+    Else
+      Log.Message("Found file containing search string: " + SubstringToFind)
+      Log.Message("Found file name is: " + file)
+      log.Message SubstringToFind
+      ObjInputFile.Close
+    FileSearchLastUpdated_ContainingString = file
+    Exit Function	  
+    End If
+      
+    list.MoveNext
+    Loop
+  
+  list.Close
+End Function

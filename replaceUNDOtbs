@@ -1,0 +1,4 @@
+create undo tablespace UNDOTBS1 datafile 'C:\app\Administrator\product\18.0.0\oradata\XE\UNDOTBS01.DBF' size 200M;
+ALTER SYSTEM SET UNDO_TABLESPACE = UNDOTBS1 SCOPE=BOTH;
+select tablespace_name, status, count(*) from dba_rollback_segs group by tablespace_name, status;
+drop tablespace undotbs2 including contents and datafiles;
