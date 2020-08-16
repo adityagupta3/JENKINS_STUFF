@@ -1,0 +1,40 @@
+pipeline {
+    agent none
+
+    stages {
+        stage('Push config') {
+    steps {
+        script {
+            def nodes =['GGNTESTFARM01','GGNTESTFARM02','GGNTESTFARM03','GGNTESTFARM04','GGNTESTFARM05','GGNTESTFARM06','GGNTESTFARM07','GGNTESTFARM08','GGNTESTFARM09','GGNTESTFARM10','GGNTESTFARM11','GGNTESTFARM12','GGNTESTFARM13','GGNTESTFARM14','GGNTESTFARM15','GGNTESTFARM16','GGNTESTFARM17','GGNTESTFARM18','GGNTESTFARM19','GGNTESTFARM20','GGNTESTFARM22','GGNTESTFARM23','GGNTESTFARM24','GGNTESTFARM25','GGNTESTFARM26','GGNTESTFARM27','GGNTESTFARM28','GGNTESTFARM29','GGNTESTFARM30']
+
+                    def parallelStagesMap = nodes.collectEntries {
+                        ["${it}" : runStage(it)]
+                        }
+                    parallel parallelStagesMap
+                }
+            }
+        }
+    }
+}
+
+
+
+
+def runStage(nodeLabel) {
+    return {
+        stage("Runs on ${nodeLabel}") {
+        node(nodeLabel) {
+            bat label: '', script: '''
+taskkill /f /im javaws.exe
+taskkill /f /im jp2launcher.exe
+Call C:\\Applications\\clean.bat
+RMDIR C:\\Applications\\JAVA\\OPENJDK11 /S /Q
+xcopy \\\\ggntestora2\\d$\\TEMP_SHARE\\OPENJDK11 C:\\Applications\\JAVA\\OPENJDK11 /E /H /C /I /Y
+RMDIR C:\\Applications\\JAVA\\ORACLEJDK11 /S /Q
+xcopy \\\\ggntestora2\\d$\\TEMP_SHARE\\ORACLEJDK11 C:\\Applications\\JAVA\\ORACLEJDK11 /E /H /C /I /Y
+'''
+                
+            }
+        }
+    }
+}
