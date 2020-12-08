@@ -1,0 +1,35 @@
+pipeline {
+    agent none
+
+    stages {
+        stage('Push config') {
+    steps {
+        script {
+            def nodes =['GGNTESTFARM01','GGNTESTFARM02','GGNTESTFARM03','GGNTESTFARM04','GGNTESTFARM05','GGNTESTFARM06','GGNTESTFARM07','GGNTESTFARM08','GGNTESTFARM09','GGNTESTFARM10','GGNTESTFARM11','GGNTESTFARM12','GGNTESTFARM13','GGNTESTFARM14','GGNTESTFARM15','GGNTESTFARM16','GGNTESTFARM17','GGNTESTFARM18','GGNTESTFARM19','GGNTESTFARM20','GGNTESTFARM21','GGNTESTFARM22','GGNTESTFARM23','GGNTESTFARM24','GGNTESTFARM25','GGNTESTFARM26','GGNTESTFARM27','GGNTESTFARM28','GGNTESTFARM29','GGNTESTFARM30','GGNTESTFARM31','GGNTESTFARM32','GGNTESTFARM33','GGNTESTFARM34','GGNTESTFARM35','GGNTESTFARM36','GGNTESTFARM37','GGNTESTFARM38','GGNTESTFARM39','GGNTESTFARM40','GGNTESTFARM41','GGNTESTFARM42','GGNTESTFARM43','GGNTESTFARM44','GGNTESTFARM45','GGNTESTFARM46','GGNTESTFARM47','GGNTESTFARM48','GGNTESTFARM49','GGNTESTFARM50','GGNTESTFARM50','GGNTESTFARM51','GGNTESTFARM52','GGNTESTFARM53','GGNTESTFARM55','GGNTESTFARM55','GGNTESTFARM56','GGNTESTFARM57','GGNTESTFARM58','GGNTESTFARM59','GGNTESTFARM60']
+
+                    def parallelStagesMap = nodes.collectEntries {
+                        ["${it}" : runStage(it)]
+                        }
+                    parallel parallelStagesMap
+                }
+            }
+        }`
+    }
+}
+
+
+
+
+def runStage(nodeLabel) {
+    return {
+        stage("Runs on ${nodeLabel}") {
+        node(nodeLabel) {
+            bat label: '', script: '''
+copy \\\\ggntestora2\\d$\\TEMP_SHARE\\VM_STUFF\\control.cmdr C:\\Applications\\eventomatic\\code /Y
+
+'''
+                
+            }
+        }
+    }
+}

@@ -1,0 +1,4 @@
+java -jar bravura-installer.jar -targets=sonata.deploy.docker -pofile=DOCKER -Dversion.to=10.9.0.0.336 -Dclient.to=Base -Ddocker.appserver.type=wildfly override.docker.url=bravura/sonata-backoffice-base override.docker.image=10.9.0.336
+
+java -jar bravura-installer.jar -targets=workflow.deploy.docker -profile=DOCKER_WF override.docker.image=bravura/workflow-base -Dworkflow.release.to=Base-10.9.0.148 -Ddocker.appserver.type=wildfly
+java -jar bravura-installer.jar   targets=sonata.deploy.docker  profile=BACKOFFICE  release.to=Base-10.3.0.LATEST override.docker.url=bravura/sonata-app  override.docker.image=backoffice-10.3.0.316-wildfly 

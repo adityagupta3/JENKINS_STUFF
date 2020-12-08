@@ -1,0 +1,52 @@
+Calendar cal=Calendar.getInstance();
+def currentDay = cal.get(Calendar.DAY_OF_WEEK)
+def vms = ['GGNTESTFARM30','GGNTESTFARM31','GGNTESTFARM32','GGNTESTFARM33','GGNTESTFARM34','GGNTESTFARM35','GGNTESTFARM36','GGNTESTFARM37','GGNTESTFARM38','GGNTESTFARM39','GGNTESTFARM40','GGNTESTFARM41','GGNTESTFARM42']
+
+if (currentDay == 6 || currentDay == 7 )
+                       
+{
+   for (node in jenkins.model.Jenkins.instance.nodes) {
+    
+     for ( vm in vms ) {
+     if (node.getNodeName().equals(vm)) {
+       print(vm)
+				
+		println("Found node to update: " + vm)
+				
+		oldLabelString = node.getLabelString()
+            
+                println("Removing label '" + oldLabelString + "' from node " + vm)
+                
+                node.setLabelString("")
+       node.setLabelString("${vm} WEEKEND")
+                println("Adding label WEEKEND " + vm)
+		node.save()
+     }
+        }
+    }
+}
+
+if (currentDay == 1 || currentDay == 2 ||currentDay == 3 || currentDay == 4 || currentDay == 5 )
+                       
+{
+   for (node in jenkins.model.Jenkins.instance.nodes) {
+    
+     for ( vm in vms ) {
+     if (node.getNodeName().equals(vm)) {
+       print(vm)
+				
+		println("Found node to update: " + vm)
+				
+		oldLabelString = node.getLabelString()
+            
+                println("Removing label '" + oldLabelString + "' from node " + vm)
+                
+                node.setLabelString("")
+       node.setLabelString("${vm} BART CART")
+                println("Adding label BART CART " + vm)
+		node.save()
+     }
+        }
+    }
+}
+

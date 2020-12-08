@@ -1,0 +1,24 @@
+#!/bin/bash 
+JBOSS_HOME='C:\Applications\wildfly-16.0.0.Final'
+
+function jboss_cli() { ${JBOSS_HOME}/bin/jboss-cli -c --command="${@}"; }
+
+sonata_ear_status="$(jboss-cli '/deployment/sonata.ear:read-attribute status')"
+
+database_connection_status="$(jboss-cli '/subsystem=datasources/data-source=OracleDS0 test-connection-in-pool()')"
+
+if [[ "${sonata_ear_status}" = "success" ]]; then
+    echo 'Sonata ear deployed successfully'
+    exit 0
+fi    
+
+if [[ "${database_connection_status}" = "success" ]]; then
+    echo 'DB Connection established successfully'
+    exit 0
+fi 
+
+if  [[ "curl --verbose https://localhost:8080/sonata 2>&1 | grep 302 Found" ]]; then
+    echo "Server Returned code 302 , Seems ready to accept traffic"
+    exit 0
+fi 
+
